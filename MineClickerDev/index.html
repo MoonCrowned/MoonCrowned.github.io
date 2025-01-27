@@ -79,7 +79,7 @@
         streamingAssetsUrl: "StreamingAssets",
         companyName: "MoonCrowned",
         productName: "MineClicker",
-        productVersion: "0.1.54",
+        productVersion: "0.1.56",
         showBanner: unityShowBanner,
       };
 
@@ -131,25 +131,40 @@
         canvas.style.width = width + 'px';
         canvas.style.height = height + 'px';
       }
-      
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // Mobile device style: fill the whole browser client area with the game canvas:
 
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        // Create the meta tag to adjust viewport for mobiles
         var meta = document.createElement('meta');
         meta.name = 'viewport';
         meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
         document.getElementsByTagName('head')[0].appendChild(meta);
+
         document.querySelector("#unity-container").className = "unity-mobile";
         canvas.className = "unity-mobile";
 
-        // Translate -1 to make it display on right position (For telegram bot view)
-        // if(window.Telegram) {
-        //   canvas.style.transform = "translateY(-1px)";
-        // }
-        // To lower canvas resolution on mobile devices to gain some
-        // performance, uncomment the following line:
-        // config.devicePixelRatio = 1;
+        // Use window.devicePixelRatio to identify high-DPI screens and adjust resolution
+        var maxAllowedDPI = 300; // Maximum DPI we consider as reasonable
+        var deviceDPI = window.devicePixelRatio && window.devicePixelRatio > 1 ? window.devicePixelRatio * 96 : 96;
 
+        if (deviceDPI > maxAllowedDPI) {
+          // Reduce canvas resolution for high DPI devices
+          var scaleFactor = maxAllowedDPI / deviceDPI; // dynamically reduce resolution
+          canvas.width = canvas.width * scaleFactor;
+          canvas.height = canvas.height * scaleFactor;
+          config.devicePixelRatio = scaleFactor;
+
+          console.log("High DPI detected. Reducing resolution scale factor to: ", scaleFactor);
+        } else {
+          // Default behavior for standard DPI
+          config.devicePixelRatio = 1;
+          console.log("Standard DPI detected. No scaling applied.");
+        }
+
+        // (Optional) Translate -1 for Telegram's WebView if needed
+        // Uncomment if required:
+        // if (window.Telegram) {
+        //     canvas.style.transform = "translateY(-1px)";
+        // }
 
       } else {
         // // Desktop style: Render the game canvas in a window that will be in 9/16 ratio:
