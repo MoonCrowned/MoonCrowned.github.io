@@ -74,7 +74,7 @@
         streamingAssetsUrl: "StreamingAssets",
         companyName: "MoonCrowned",
         productName: "MineClicker",
-        productVersion: "0.1.64",
+        productVersion: "0.1.76",
         showBanner: unityShowBanner,
       };
 
@@ -121,7 +121,51 @@
         resizeCanvas();
       }
 
+      let UnityInstance = null;
       
+      function ShowAdUnity(adUnitName, unityGameObject, callbackFunction) {
+        window.Sonar.show({ adUnit: adUnitName, // Замените {bannerAdUnitName} на актуальное
+
+                onStart: () => {
+                  // Добавьте логику для момента начала загрузки рекламы
+                  const eventType = "onStart";
+                  UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify({ eventType }));
+                },
+        
+                        onShow: () => {
+                  // Добавьте логику для момента, когда реклама становится видимой пользователю
+                  const eventType = "onShow";
+                  UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify({ eventType }));
+                },
+        
+                        onError: () => {
+                  // Обработайте ошибки, которые могут возникнуть во время жизненного цикла рекламы
+                  const eventType = "onError";
+                  UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify({ eventType }));
+                },
+        
+                        onClose: () => {
+                  // Добавьте логику для момента, когда объявление закрылось (например, возобновить контент, показать следующую страницу)
+                  const eventType = "onClose";
+                  UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify({ eventType }));
+                },
+        
+                        onReward: () => {
+                  // Обработайте выдачу пользователю его награды (например, разблокировка контента или внутриигровой валюты)
+                  const eventType = "onReward";
+                  UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify({ eventType }));
+                },})
+          .then((result) => {
+            // const status = result.status || "unknown";
+            // const message = result.message || "";
+            // UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify({ status, message }));
+          })
+          .catch((err) => {
+            UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify({ error: err.message || "Unknown error" }));
+          });
+      }
+      
+
       document.querySelector("#unity-loading-bar").style.display = "block";
 
       var script = document.createElement("script");
@@ -131,25 +175,7 @@
           document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
               }).then((unityInstance) => {
                 document.querySelector("#unity-loading-bar").style.display = "none";
-
-                // Define ShowAdUnity after Unity is ready
-                window.ShowAdUnity = function (adUnitName, unityGameObject, callbackFunction) {
-                  if (typeof SendMessage !== "function") {
-                    console.error("SendMessage is not available!");
-                    return;
-                  }
-      
-                  window.Sonar.show({ adUnit: adUnitName })
-                          .then((result) => {
-                            const status = result.status || "unknown";
-                            const message = result.message || "";
-                            SendMessage(unityGameObject, callbackFunction, JSON.stringify({ status, message }));
-                          })
-                          .catch((err) => {
-                            SendMessage(unityGameObject, callbackFunction, JSON.stringify({ error: err.message || "Unknown error" }));
-                          });
-                };
-                
+                UnityInstance = unityInstance;
               }).catch((message) => {
                 alert(message);
               });
