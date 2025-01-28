@@ -7,6 +7,7 @@
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
     <script src="https://telegram.org/js/telegram-web-app.js?56"></script>
+    <script src="https://static.sonartech.io/lib/1.0.0/sonar.js?appId=app_6e6ce853"></script>
     <style>
       html, body {
         height: 100%;
@@ -20,8 +21,8 @@
         overflow: hidden;
       }
       canvas {
-        display: block; /* Prevent scrollbars */
-        background-color: black; /* Optional: background color */
+        display: block;
+        background-color: black;
       }
     </style>
   </head>
@@ -39,12 +40,6 @@
     <script>
       var canvas = document.querySelector("#unity-canvas");
       
-      // Shows a temporary message banner/ribbon for a few seconds, or
-      // a permanent error message on top of the canvas if type=='error'.
-      // If type=='warning', a yellow highlight color is used.
-      // Modify or remove this function to customize the visually presented
-      // way that non-critical warnings and error messages are presented to the
-      // user.
       function unityShowBanner(msg, type) {
         var warningBanner = document.querySelector("#unity-warning");
         function updateBannerVisibility() {
@@ -79,50 +74,11 @@
         streamingAssetsUrl: "StreamingAssets",
         companyName: "MoonCrowned",
         productName: "MineClicker",
-        productVersion: "0.1.46",
+        productVersion: "0.1.77",
         showBanner: unityShowBanner,
       };
 
-      // By default, Unity keeps WebGL canvas render target size matched with
-      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
-      // Set this to false if you want to decouple this synchronization from
-      // happening inside the engine, and you would instead like to size up
-      // the canvas DOM size and WebGL render target sizes yourself.
       config.matchWebGLToCanvasSize = true;
-
-//       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-//         // Mobile device style: fill the whole browser client area with the game canvas:
-//
-//         var meta = document.createElement('meta');
-//         meta.name = 'viewport';
-//         meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-//         document.getElementsByTagName('head')[0].appendChild(meta);
-//         document.querySelector("#unity-container").className = "unity-mobile";
-//         canvas.className = "unity-mobile";
-//
-//         // Translate -1 to make it display on right position (For telegram bot view)
-//         if(window.Telegram) {
-//           canvas.style.transform = "translateY(-1px)";
-//         }
-//         // To lower canvas resolution on mobile devices to gain some
-//         // performance, uncomment the following line:
-//         // config.devicePixelRatio = 1;
-//
-// #if SHOW_DIAGNOSTICS
-//         // position the diagnostics icon in the corner on the canvas
-//         diagnostics_icon.style.position = "fixed";
-//         diagnostics_icon.style.bottom = "10px";
-//         diagnostics_icon.style.right = "0px";
-//         canvas.after(diagnostics_icon);
-// #endif
-//
-//       } else {
-//         // Desktop style: Render the game canvas in a window that will be in 9/16 ratio:
-//         canvas.style.height = window.innerHeight + 'px';
-//         //canvas.style.width = (window.innerHeight / 16 * 9)  + 'px';
-//         canvas.style.width = window.innerWidth + 'px';
-//       }
-
       function resizeCanvas() {
         var container = document.querySelector("#unity-container");
         var width = container.clientWidth;
@@ -131,32 +87,82 @@
         canvas.style.width = width + 'px';
         canvas.style.height = height + 'px';
       }
-      
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // Mobile device style: fill the whole browser client area with the game canvas:
 
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        // Create the meta tag to adjust viewport for mobiles
         var meta = document.createElement('meta');
         meta.name = 'viewport';
         meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
         document.getElementsByTagName('head')[0].appendChild(meta);
+
         document.querySelector("#unity-container").className = "unity-mobile";
         canvas.className = "unity-mobile";
 
-        // Translate -1 to make it display on right position (For telegram bot view)
-        // if(window.Telegram) {
-        //   canvas.style.transform = "translateY(-1px)";
-        // }
-        // To lower canvas resolution on mobile devices to gain some
-        // performance, uncomment the following line:
-        // config.devicePixelRatio = 1;
+        // Use window.devicePixelRatio to identify high-DPI screens and adjust resolution
+        var maxAllowedDPI = 300; // Maximum DPI we consider as reasonable
+        var deviceDPI = window.devicePixelRatio && window.devicePixelRatio > 1 ? window.devicePixelRatio * 96 : 96;
 
+        if (deviceDPI > maxAllowedDPI) {
+          // Reduce canvas resolution for high DPI devices
+          var scaleFactor = maxAllowedDPI / deviceDPI; // dynamically reduce resolution
+          canvas.width = canvas.width * scaleFactor;
+          canvas.height = canvas.height * scaleFactor;
+          config.devicePixelRatio = scaleFactor;
+
+          console.log("High DPI detected. Reducing resolution scale factor to: ", scaleFactor);
+        } else {
+          // Default behavior for standard DPI
+          config.devicePixelRatio = 1;
+          console.log("Standard DPI detected. No scaling applied.");
+        }
 
       } else {
-        // // Desktop style: Render the game canvas in a window that will be in 9/16 ratio:
-        // canvas.style.height = window.innerHeight + 'px';
-        // canvas.style.width = (window.innerHeight / 16 * 9)  + 'px';
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
+      }
+
+      let UnityInstance = null;
+      
+      function ShowAdUnity(adUnitName, unityGameObject, callbackFunction) {
+        window.Sonar.show({ adUnit: adUnitName, // Замените {bannerAdUnitName} на актуальное
+
+                onStart: () => {
+                  // Добавьте логику для момента начала загрузки рекламы
+                  const eventType = "onStart";
+                  UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify({ eventType }));
+                },
+        
+                        onShow: () => {
+                  // Добавьте логику для момента, когда реклама становится видимой пользователю
+                  const eventType = "onShow";
+                  UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify({ eventType }));
+                },
+        
+                        onError: () => {
+                  // Обработайте ошибки, которые могут возникнуть во время жизненного цикла рекламы
+                  const eventType = "onError";
+                  UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify({ eventType }));
+                },
+        
+                        onClose: () => {
+                  // Добавьте логику для момента, когда объявление закрылось (например, возобновить контент, показать следующую страницу)
+                  const eventType = "onClose";
+                  UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify({ eventType }));
+                },
+        
+                        onReward: () => {
+                  // Обработайте выдачу пользователю его награды (например, разблокировка контента или внутриигровой валюты)
+                  const eventType = "onReward";
+                  UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify({ eventType }));
+                },})
+          .then((result) => {
+            // const status = result.status || "unknown";
+            // const message = result.message || "";
+            // UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify({ status, message }));
+          })
+          .catch((err) => {
+            UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify({ error: err.message || "Unknown error" }));
+          });
       }
       
 
@@ -169,9 +175,7 @@
           document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
               }).then((unityInstance) => {
                 document.querySelector("#unity-loading-bar").style.display = "none";
-
-
-
+                UnityInstance = unityInstance;
               }).catch((message) => {
                 alert(message);
               });
