@@ -169,7 +169,7 @@
 			var jsonFeed = JSON.stringify({feed});
 			console.log("Json feed:", jsonFeed);
             UnityInstance.SendMessage(unityGameObject, callbackFunction, jsonFeed);
-		}).catch(err => {console.error('Feed error:', JSON.stringify({err}));}); }
+		}).catch(err => {console.error('Feed error:', JSON.stringify(err));}); }
 
       function TappAds_TaskStart(unityGameObject, callbackFunction, taskId)
       { TappAdsPubSdk.taskStart(taskId).then(taskId => {UnityInstance.SendMessage(unityGameObject, callbackFunction, taskId);}).catch(err => {console.error('Task start error:', err);}); }
