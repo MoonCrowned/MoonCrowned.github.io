@@ -75,7 +75,7 @@
         streamingAssetsUrl: "StreamingAssets",
         companyName: "MoonCrowned",
         productName: "MineClicker",
-        productVersion: "0.1.89",
+        productVersion: "0.1.90",
         showBanner: unityShowBanner,
       };
 
@@ -160,6 +160,7 @@
       }
 
       // TappAdsPubSdk
+      console.log('Try to init TappAdsPubSdk');
       TappAdsPubSdk.init('ff831661-fec2-4ec5-95db-4e1ebbe3a6f6', {debug: true}).then(() => {console.log('TappAdsPubSdk initialized');}).catch(err => {console.error('TappAdsPubSdk initialization error:', err);});
       function TappAds_GetFeed(unityGameObject, callbackFunction)
       { TappAdsPubSdk.getFeed().then(feed => {UnityInstance.SendMessage(unityGameObject, callbackFunction, feed);}).catch(err => {console.error('Feed error:', err);}); }
