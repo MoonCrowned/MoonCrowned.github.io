@@ -163,7 +163,11 @@
       console.log('Try to init TappAdsPubSdk');
       TappAdsPubSdk.init('ff831661-fec2-4ec5-95db-4e1ebbe3a6f6', {debug: false}).then(() => {console.log('TappAdsPubSdk initialized');}).catch(err => {console.error('TappAdsPubSdk initialization error:', err);});
       function TappAds_GetFeed(unityGameObject, callbackFunction)
-      { TappAdsPubSdk.getFeed().then(feed => {UnityInstance.SendMessage(unityGameObject, callbackFunction, feed);}).catch(err => {console.error('Feed error:', err);}); }
+      { TappAdsPubSdk.getFeed().then(feed => 
+		{
+			console.log("Received feed:", feed);
+			UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify(feed));
+		}).catch(err => {console.error('Feed error:', err);}); }
 
       function TappAds_TaskStart(unityGameObject, callbackFunction, taskId)
       { TappAdsPubSdk.taskStart(taskId).then(taskId => {UnityInstance.SendMessage(unityGameObject, callbackFunction, taskId);}).catch(err => {console.error('Task start error:', err);}); }
