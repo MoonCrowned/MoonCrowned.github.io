@@ -7,7 +7,8 @@
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
     <script src="https://telegram.org/js/telegram-web-app.js?56"></script>
-    <script src="https://static.sonartech.io/lib/1.0.0/sonar.js?appId=app_6e6ce853&isDebug=true"></script>
+    <script src="https://static.sonartech.io/lib/1.0.0/sonar.js?appId=app_6e6ce853"></script>
+    <script src="https://sdk.tappads.io/pub/sdk_v1.js"></script>
     <style>
       html, body {
         height: 100%;
@@ -74,7 +75,7 @@
         streamingAssetsUrl: "StreamingAssets",
         companyName: "MoonCrowned",
         productName: "MineClicker",
-        productVersion: "0.1.76",
+        productVersion: "0.1.89",
         showBanner: unityShowBanner,
       };
 
@@ -98,24 +99,17 @@
         document.querySelector("#unity-container").className = "unity-mobile";
         canvas.className = "unity-mobile";
 
-        // Use window.devicePixelRatio to identify high-DPI screens and adjust resolution
-        var maxAllowedDPI = 300; // Maximum DPI we consider as reasonable
-        var deviceDPI = window.devicePixelRatio && window.devicePixelRatio > 1 ? window.devicePixelRatio * 96 : 96;
+        // Set canvas resolution with a fixed height of 1080
+        var targetHeight = 1080;
+        var aspectRatio = canvas.width / canvas.height; // Maintain the aspect ratio
 
-        if (deviceDPI > maxAllowedDPI) {
-          // Reduce canvas resolution for high DPI devices
-          var scaleFactor = maxAllowedDPI / deviceDPI; // dynamically reduce resolution
-          canvas.width = canvas.width * scaleFactor;
-          canvas.height = canvas.height * scaleFactor;
-          config.devicePixelRatio = scaleFactor;
+        canvas.height = targetHeight;
+        canvas.width = targetHeight * aspectRatio;
 
-          console.log("High DPI detected. Reducing resolution scale factor to: ", scaleFactor);
-        } else {
-          // Default behavior for standard DPI
-          config.devicePixelRatio = 1;
-          console.log("Standard DPI detected. No scaling applied.");
-        }
+        // Apply the device pixel ratio to ensure it handles high-DPI screens properly
+        config.devicePixelRatio = window.devicePixelRatio || 1;
 
+        console.log(`Resolution set with height: ${canvas.height}, width: ${canvas.width}, maintaining aspect ratio.`);
       } else {
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
@@ -164,6 +158,18 @@
             UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify({ error: err.message || "Unknown error" }));
           });
       }
+
+      // TappAdsPubSdk
+      TappAdsPubSdk.init('ff831661-fec2-4ec5-95db-4e1ebbe3a6f6', {debug: true}).then(() => {console.log('TappAdsPubSdk initialized');}).catch(err => {console.error('TappAdsPubSdk initialization error:', err);});
+      function TappAds_GetFeed(unityGameObject, callbackFunction)
+      { TappAdsPubSdk.getFeed().then(feed => {UnityInstance.SendMessage(unityGameObject, callbackFunction, feed);}).catch(err => {console.error('Feed error:', err);}); }
+
+      function TappAds_TaskStart(unityGameObject, callbackFunction, taskId)
+      { TappAdsPubSdk.taskStart(taskId).then(taskId => {UnityInstance.SendMessage(unityGameObject, callbackFunction, taskId);}).catch(err => {console.error('Task start error:', err);}); }
+
+      function TappAds_GetTaskStatus(unityGameObject, callbackFunction, tasksId)
+      { TappAdsPubSdk.getTaskStatus(tasksId).then(res => {UnityInstance.SendMessage(unityGameObject, callbackFunction, res);}).catch(err => {console.error('Tasks status error:', err);}); }
+      
       
 
       document.querySelector("#unity-loading-bar").style.display = "block";
