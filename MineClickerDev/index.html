@@ -166,7 +166,9 @@
       { TappAdsPubSdk.getFeed().then(feed => 
 		{
 			console.log("Received feed:", feed);
-			UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify(feed));
+			var jsonFeed = JSON.stringify(feed);
+			console.log("Json feed:", jsonFeed);
+			UnityInstance.SendMessage(unityGameObject, callbackFunction, jsonFeed);
 		}).catch(err => {console.error('Feed error:', err);}); }
 
       function TappAds_TaskStart(unityGameObject, callbackFunction, taskId)
