@@ -75,7 +75,7 @@
         streamingAssetsUrl: "StreamingAssets",
         companyName: "MoonCrowned",
         productName: "MineClicker",
-        productVersion: "0.1.95",
+        productVersion: "0.1.98",
         showBanner: unityShowBanner,
       };
 
@@ -163,14 +163,16 @@
       console.log('Try to init TappAdsPubSdk');
       TappAdsPubSdk.init('ff831661-fec2-4ec5-95db-4e1ebbe3a6f6', {debug: true}).then(() => {console.log('TappAdsPubSdk initialized');}).catch(err => {console.error('TappAdsPubSdk initialization error:', err);});
       function TappAds_GetFeed(unityGameObject, callbackFunction)
-      { TappAdsPubSdk.getFeed().then(feed => {UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify({ feed })); console.log(JSON.stringify({ feed }));})
+      { TappAdsPubSdk.getFeed().then(feed => {UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify({ feed }));})
               .catch(err => {UnityInstance.SendMessage(unityGameObject, callbackFunction+'Error', JSON.stringify({ err })); console.error('Feed error:', JSON.stringify({ err }));}); }
 
       function TappAds_TaskStart(unityGameObject, callbackFunction, taskId)
-      { TappAdsPubSdk.taskStart(taskId).then(taskId => {UnityInstance.SendMessage(unityGameObject, callbackFunction, taskId);}).catch(err => {console.error('Task start error:', err);}); }
+      { TappAdsPubSdk.taskStart(taskId).then(taskId => {UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify( taskId ));})
+              .catch(err => {UnityInstance.SendMessage(unityGameObject, callbackFunction+'Error', JSON.stringify({ err })); console.error('Task start error:', JSON.stringify({ err }));}); }
 
       function TappAds_GetTaskStatus(unityGameObject, callbackFunction, tasksId)
-      { TappAdsPubSdk.getTaskStatus(tasksId).then(res => {UnityInstance.SendMessage(unityGameObject, callbackFunction, res);}).catch(err => {console.error('Tasks status error:', err);}); }
+      { TappAdsPubSdk.getTaskStatus(tasksId).then(res => {UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify(taskId));})
+              .catch(err => {UnityInstance.SendMessage(unityGameObject, callbackFunction+'Error', JSON.stringify({ err })); console.error('Task start error:', JSON.stringify({ err }));}); }
       
       
 
