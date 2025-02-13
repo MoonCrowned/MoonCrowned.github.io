@@ -75,7 +75,7 @@
         streamingAssetsUrl: "StreamingAssets",
         companyName: "MoonCrowned",
         productName: "MineClicker",
-        productVersion: "0.1.90",
+        productVersion: "0.1.91",
         showBanner: unityShowBanner,
       };
 
@@ -161,15 +161,9 @@
 
       // TappAdsPubSdk
       console.log('Try to init TappAdsPubSdk');
-      TappAdsPubSdk.init('ff831661-fec2-4ec5-95db-4e1ebbe3a6f6', {debug: false}).then(() => {console.log('TappAdsPubSdk initialized');}).catch(err => {console.error('TappAdsPubSdk initialization error:', err);});
+      TappAdsPubSdk.init('ff831661-fec2-4ec5-95db-4e1ebbe3a6f6', {debug: true}).then(() => {console.log('TappAdsPubSdk initialized');}).catch(err => {console.error('TappAdsPubSdk initialization error:', err);});
       function TappAds_GetFeed(unityGameObject, callbackFunction)
-      { TappAdsPubSdk.getFeed().then(feed => 
-		{
-			console.log("Received feed:", feed);
-			var jsonFeed = JSON.stringify({feed});
-			console.log("Json feed:", jsonFeed);
-            UnityInstance.SendMessage(unityGameObject, callbackFunction, jsonFeed);
-		}).catch(err => {console.error('Feed error:', JSON.stringify(err));}); }
+      { TappAdsPubSdk.getFeed().then(feed => {UnityInstance.SendMessage(unityGameObject, callbackFunction, feed);}).catch(err => {console.error('Feed error:', err);}); }
 
       function TappAds_TaskStart(unityGameObject, callbackFunction, taskId)
       { TappAdsPubSdk.taskStart(taskId).then(taskId => {UnityInstance.SendMessage(unityGameObject, callbackFunction, taskId);}).catch(err => {console.error('Task start error:', err);}); }
