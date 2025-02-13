@@ -168,7 +168,7 @@
 
       function TappAds_TaskStart(taskId, unityGameObject, callbackFunction)
       { console.log('Try to start task ', taskId);
-        TappAdsPubSdk.taskStart(taskId).then(taskId => {UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify( taskId ));})
+        TappAdsPubSdk.taskStart(taskId).then(taskId => {UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify( {taskId} )); console.log('Task ', taskId, ' started');})
               .catch(err => {UnityInstance.SendMessage(unityGameObject, callbackFunction+'Error', JSON.stringify({ err })); console.error('Task start error:', JSON.stringify({ err }));}); }
 
       function TappAds_GetTaskStatus(tasksId, unityGameObject, callbackFunction)
