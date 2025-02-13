@@ -75,7 +75,7 @@
         streamingAssetsUrl: "StreamingAssets",
         companyName: "MoonCrowned",
         productName: "MineClicker",
-        productVersion: "0.1.98",
+        productVersion: "0.1.99",
         showBanner: unityShowBanner,
       };
 
@@ -173,7 +173,7 @@
 
       function TappAds_GetTaskStatus(unityGameObject, callbackFunction, tasksId)
       { TappAdsPubSdk.getTaskStatus(tasksId).then(res => {UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify(taskId));})
-              .catch(err => {UnityInstance.SendMessage(unityGameObject, callbackFunction+'Error', JSON.stringify({ err })); console.error('Task start error:', JSON.stringify({ err }));}); }
+              .catch(err => {UnityInstance.SendMessage(unityGameObject, callbackFunction+'Error', JSON.stringify({ err })); console.error('GetTaskStatus error:', JSON.stringify({ err }));}); }
       
       
 
