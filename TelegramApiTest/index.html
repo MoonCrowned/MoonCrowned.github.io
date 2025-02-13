@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="TemplateData/style.css">
     <script src="https://telegram.org/js/telegram-web-app.js?56"></script>
     <script src="https://static.sonartech.io/lib/1.0.0/sonar.js?appId=app_6e6ce853"></script>
+    <script src="https://sdk.tappads.io/pub/sdk_v1.js"></script>
     <style>
       html, body {
         height: 100%;
@@ -74,7 +75,7 @@
         streamingAssetsUrl: "StreamingAssets",
         companyName: "MoonCrowned",
         productName: "MineClicker",
-        productVersion: "0.1.86",
+        productVersion: "0.1.105",
         showBanner: unityShowBanner,
       };
 
@@ -157,6 +158,23 @@
             UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify({ error: err.message || "Unknown error" }));
           });
       }
+
+      // TappAdsPubSdk
+      console.log('Try to init TappAdsPubSdk');
+      TappAdsPubSdk.init('ff831661-fec2-4ec5-95db-4e1ebbe3a6f6', {debug: false}).then(() => {console.log('TappAdsPubSdk initialized');}).catch(err => {console.error('TappAdsPubSdk initialization error:', err);});
+      function TappAds_GetFeed(unityGameObject, callbackFunction)
+      { TappAdsPubSdk.getFeed().then(feed => {UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify({ feed }));})
+              .catch(err => {UnityInstance.SendMessage(unityGameObject, callbackFunction+'Error', JSON.stringify({ err })); console.error('Feed error:', JSON.stringify({ err }));}); }
+
+      function TappAds_TaskStart(taskId, unityGameObject, callbackFunction)
+      { TappAdsPubSdk.taskStart(taskId).then(taskId => {UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify( {taskId} ));})
+                .catch(err => {UnityInstance.SendMessage(unityGameObject, callbackFunction+'Error', JSON.stringify({ err })); console.error('Task start error:', JSON.stringify({ err }));}); }
+
+      function TappAds_GetTaskStatus(tasksId, unityGameObject, callbackFunction)
+      { var tasksIdArray = JSON.parse(tasksId);
+        TappAdsPubSdk.getTaskStatus(tasksIdArray).then(res => {UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify(res));})
+                .catch(err => {UnityInstance.SendMessage(unityGameObject, callbackFunction+'Error', JSON.stringify({ err })); console.error('GetTaskStatus error:', JSON.stringify({ err }));}); }
+      
       
 
       document.querySelector("#unity-loading-bar").style.display = "block";
