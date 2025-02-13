@@ -75,7 +75,7 @@
         streamingAssetsUrl: "StreamingAssets",
         companyName: "MoonCrowned",
         productName: "MineClicker",
-        productVersion: "0.1.102",
+        productVersion: "0.1.104",
         showBanner: unityShowBanner,
       };
 
@@ -167,14 +167,11 @@
               .catch(err => {UnityInstance.SendMessage(unityGameObject, callbackFunction+'Error', JSON.stringify({ err })); console.error('Feed error:', JSON.stringify({ err }));}); }
 
       function TappAds_TaskStart(taskId, unityGameObject, callbackFunction)
-      { console.log('Try to start task ', taskId);
-        TappAdsPubSdk.taskStart(taskId).then(taskId => {UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify( {taskId} )); console.log('Task ', taskId, ' started');})
+      { TappAdsPubSdk.taskStart(taskId).then(taskId => {UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify( {taskId} ));})
                 .catch(err => {UnityInstance.SendMessage(unityGameObject, callbackFunction+'Error', JSON.stringify({ err })); console.error('Task start error:', JSON.stringify({ err }));}); }
 
       function TappAds_GetTaskStatus(tasksId, unityGameObject, callbackFunction)
-      { console.log(tasksId);
-        //var tasksIdArray = JSON.parse('{'+tasksId+'}');
-        var tasksIdArray = JSON.parse(tasksId);
+      { var tasksIdArray = JSON.parse(tasksId);
         TappAdsPubSdk.getTaskStatus(tasksIdArray).then(res => {UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify(res));})
                 .catch(err => {UnityInstance.SendMessage(unityGameObject, callbackFunction+'Error', JSON.stringify({ err })); console.error('GetTaskStatus error:', JSON.stringify({ err }));}); }
       
