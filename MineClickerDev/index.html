@@ -172,7 +172,8 @@
               .catch(err => {UnityInstance.SendMessage(unityGameObject, callbackFunction+'Error', JSON.stringify({ err })); console.error('Task start error:', JSON.stringify({ err }));}); }
 
       function TappAds_GetTaskStatus(unityGameObject, callbackFunction, tasksId)
-      { var tasksIdArray = JSON.parse(tasksId);
+      { console.log(tasksId);
+        var tasksIdArray = JSON.parse('{'+tasksId+'}');
         TappAdsPubSdk.getTaskStatus(tasksIdArray).then(res => {UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify(res));})
               .catch(err => {UnityInstance.SendMessage(unityGameObject, callbackFunction+'Error', JSON.stringify({ err })); console.error('GetTaskStatus error:', JSON.stringify({ err }));}); }
       
