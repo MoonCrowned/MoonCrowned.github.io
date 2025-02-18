@@ -9,6 +9,10 @@
     <script src="https://telegram.org/js/telegram-web-app.js?56"></script>
     <script src="https://static.sonartech.io/lib/1.0.0/sonar.js?appId=app_6e6ce853"></script>
     <script src="https://sdk.tappads.io/pub/sdk_v1.js"></script>
+
+    <script src="https://unpkg.com/@tonconnect/ui@2.0.9/dist/tonconnect-ui.min.js"></script>
+    <script src="https://unpkg.com/tonweb@0.0.66/dist/tonweb.js"></script>
+    
     <style>
         html, body {
             height: 100%;
@@ -76,7 +80,7 @@
         streamingAssetsUrl: "StreamingAssets",
         companyName: "EpicDreams",
     productName: "StarsPlsUnity",
-    productVersion: "1.0.17",
+    productVersion: "1.0.18",
     showBanner: unityShowBanner,
     };
 
@@ -192,6 +196,28 @@
             alert(message);
         });
     };
+
+    window.addEventListener('load', function ()
+    {
+        Telegram.WebApp.ready();
+        Telegram.WebApp.expand();
+
+        console.log("Telegram Web App has been expanded to full screen");
+
+        var version = Telegram.WebApp.version;
+        var versionFloat = parseFloat(version);
+
+        if (versionFloat >= 7.7)
+        {
+            Telegram.WebApp.disableVerticalSwipes();
+
+            console.log('Activating vertical swipe disable');
+        }
+
+        console.log(`Telegram Web App opened with version: ${version}`);
+        console.log(`Telegram Web App checked` +
+            `latest version status with result: ${Telegram.WebApp.isVersionAtLeast(version)}`);
+    });
 
     document.body.appendChild(script);
 </script>
