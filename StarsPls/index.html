@@ -80,7 +80,7 @@
         streamingAssetsUrl: "StreamingAssets",
         companyName: "EpicDreams",
     productName: "StarsPlsUnity",
-    productVersion: "1.0.33",
+    productVersion: "1.0.34",
     showBanner: unityShowBanner,
     };
 
@@ -166,7 +166,7 @@
 
     // TappAdsPubSdk
     console.log('Try to init TappAdsPubSdk');
-    TappAdsPubSdk.init('ff831661-fec2-4ec5-95db-4e1ebbe3a6f6', {debug: false}).then(() => {console.log('TappAdsPubSdk initialized');}).catch(err => {console.error('TappAdsPubSdk initialization error:', err);});
+    TappAdsPubSdk.init('f9ccce47-2166-438e-9902-58f6e0b0beab', {debug: false}).then(() => {console.log('TappAdsPubSdk initialized');}).catch(err => {console.error('TappAdsPubSdk initialization error:', err);});
     function TappAds_GetFeed(unityGameObject, callbackFunction)
     { TappAdsPubSdk.getFeed().then(feed => {UnityInstance.SendMessage(unityGameObject, callbackFunction, JSON.stringify({ feed }));})
         .catch(err => {UnityInstance.SendMessage(unityGameObject, callbackFunction+'Error', JSON.stringify({ err })); console.error('Feed error:', JSON.stringify({ err }));}); }
