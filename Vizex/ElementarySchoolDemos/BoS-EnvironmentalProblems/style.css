@@ -1,0 +1,239 @@
+html {
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+body {
+    margin: 0;
+    background-image: url('temp-background.jpg');
+    background-position: center;
+    background-size: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+#unity-canvas {
+    width: 100vw;
+    height: 100vh;
+}
+
+canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    min-width: 700px;
+    flex: 1 1 auto;
+}
+
+  /* try to handle mobile dialog */
+canvas + * {
+    z-index: 2;
+}
+
+/* Main styles */
+#scene {
+    background-position: 100% 50%;
+    background-size: 100%;
+    display: flex;
+}
+
+#loader {
+    position: absolute;
+    left: 0;
+    top: 0%;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.background{
+    background-position:  100% 50%;
+    background-size: 100%
+}
+
+#logo {
+    display: block;
+    max-width: 100vw;
+    max-height: 70vh;
+    width: 10%;
+    height: 10vw;
+    background: rgba(59, 119, 236, 0.9);
+    padding: 20px;
+    border-radius: 50%;
+}
+
+#unity-loading-bar {
+    position: absolute;
+    bottom: 6.8vh;
+    width: 40%;
+    background: rgba(255, 255, 255, 0.2);
+    height: 0.2em;
+}
+#unity-progress-bar-full {
+    background: white;
+    height: 0.2em;
+    transform-origin: top left;
+    -webkit-background-size: 30px 30px;
+    -moz-background-size: 30px 30px;
+    background-size: 30px 30px;
+}
+
+#percentage {
+    color: white;
+    position: absolute;
+    right: -0.25vh;
+    top: -1.5vw;
+    font-weight: 300;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 1vw;
+}
+
+.title {
+    position: absolute;
+    width: 100%;
+    height: 5vw;
+    margin: -20% auto 0 auto;
+    color: #061781;
+    background-image: url(icons/under-loader-background.png) ;
+    border-radius: 8px;
+    padding: 2% 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 4%;
+}
+
+.title-ico {
+    flex: 1;
+    height: 110%;
+}
+
+.title-ico>img {
+    height: 100%;
+}
+
+.title-caption {
+    flex: 7;
+    height: auto;
+}
+
+.title-caption>h4 {
+    margin: 0 0 7vw 0;
+    padding: 0;
+    font-family: 'IBM Plex Sans', sans-serif;
+    color: #132f48;
+    font-weight: 400;
+    font-size: 2.5vw;
+    line-height: normal;
+}
+
+.title-caption>h5 {
+    margin-left: -3em;
+    padding: 0;
+    font-family: 'IBM Plex Sans', sans-serif;
+    color: #ffffff;
+    font-weight: 300;
+    font-size: 1.5vw;
+    line-height: normal;
+    white-space: nowrap;
+}
+
+@-webkit-keyframes animate-stripes { 
+    0% {background-position: 0 0;} 
+    100% {background-position: 60px 0;}
+}
+
+
+@-moz-keyframes animate-stripes {
+    0% {background-position: 0 0;} 
+    100% {background-position: 60px 0;}
+}
+
+.spinner,
+.spinner:after {
+    border-radius: 50%;
+    width: 5em;
+    height: 5em;
+}
+
+.spinner {
+    margin: 10px;
+    font-size: 10px;
+    position: relative;
+    text-indent: -9999em;
+    border-top: 1.1em solid rgba(255, 255, 255, 0.2);
+    border-right: 1.1em solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1.1em solid rgba(255, 255, 255, 0.2);
+    border-left: 1.1em solid #ffffff;
+    transform: translateZ(0);
+    animation: spinner-spin 1.1s infinite linear;
+}
+
+@keyframes spinner-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* iFrame styles */
+#iframe-window {
+    width: 100%;
+    height: 100vh;
+    /* min-width: 400px; */
+    max-width: 600px;
+    /* border-radius: 16px; */
+    /* border: 4px #161A1D solid; */
+    flex: 1 2 auto;
+    display: flex;
+    flex-direction: column;
+    transition: width 0.3s ease;
+    overflow: hidden;
+    background: radial-gradient(57.88% 65.92% at 98.84% 0%, #284D67 0%, #293452 100%);
+}
+
+#iframe-window.iframe-closed {
+    width: 0;
+    border-left: 0;
+    border-right: 0;
+}
+
+#iframe-window iframe {
+    border: none;
+    padding: 0;
+    margin: 0;
+    background-color: #D1DFE9;
+}
+
+.iframe-header {
+    background: none;
+    height: 32px;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+}
+
+.header-button {
+    margin: 10px 10px;
+    border: none;
+    background-color: transparent;
+}
+
+.close-iframe {
+    width: 16px;
+    height: 16px;
+    background-image: url("images/close-iframe.png");
+    background-size: contain;
+}
+
+.close-iframe:hover {
+    background-image: url("images/close-iframe_hover.png");
+}
+
+.close-iframe:active {
+    background-image: url("images/close-iframe_pressed.png");
+}
