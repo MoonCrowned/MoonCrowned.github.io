@@ -69,19 +69,18 @@
         navigator.clipboard.writeText(text);
     }
 
-    
     var buildUrl = "Build";
     var loaderUrl = buildUrl + "/StarsPls.loader.js";
     var config = {
         arguments: [],
-        dataUrl: buildUrl + "/StarsPls.data",
-        frameworkUrl: buildUrl + "/StarsPls.framework.js",
+        dataUrl: buildUrl + "/StarsPls.data.unityweb",
+        frameworkUrl: buildUrl + "/StarsPls.framework.js.unityweb",
         workerUrl: buildUrl + "/",
-        codeUrl: buildUrl + "/StarsPls.wasm",
+        codeUrl: buildUrl + "/StarsPls.wasm.unityweb",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "EpicDreams",
     productName: "StarsPlsUnity",
-    productVersion: "1.0.56",
+    productVersion: "1.0.57",
     showBanner: unityShowBanner,
     };
 
